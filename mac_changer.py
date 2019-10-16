@@ -4,6 +4,12 @@ import subprocess
 import argparse
 import re
 
+# Script to change the mac address of a Linux machine:
+
+# 1. Parse command line arguments
+# 2. Change mac address of specified interface
+# 3. Check if mac address has successfully been changed
+
 
 def get_args():
     parser = argparse.ArgumentParser()
