@@ -5,6 +5,7 @@ import argparse
 
 
 # get command line arguments
+
 def get_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("-t", "--target", dest="target", help="The IP range")
@@ -17,6 +18,7 @@ def get_args():
 
 # broadcast arp request and parse the responses from connected host replies.
 # associates an ip to a hardware address, returning these key/values in a resulting list.
+
 def discover(ip):
     # init an arp packet to broadcast address
     arp_req = scapy.ARP(pdst=ip);
@@ -35,6 +37,7 @@ def discover(ip):
 
 
 # prints a table of all ip/mac pairs from a given discovery result list
+
 def print_table(results):
     header = "IP\t\tat MAC ADDRESS\n" \
              "------------------------------------"
