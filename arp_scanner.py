@@ -4,6 +4,7 @@ import scapy.all as scapy
 import argparse
 
 
+# get command line arguments
 def get_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("-t", "--target", dest="target", help="The IP range")
@@ -14,13 +15,18 @@ def get_args():
         return args
 
 
-# send arp request to ip
+# broadcast arp request and parse the responses from connected host replies.
+# associates an ip to a hardware address, returning these key/values in a resulting list.
 def discover(ip):
+    # init an arp packet to broadcast address
     arp_req = scapy.ARP(pdst=ip);
     broadcast = scapy.Ether(dst="ff:ff:ff:ff:ff:ff")
     arp_packet = broadcast/arp_req
+    
+    # only want results from ips that answer the request
     answered = scapy.srp(arp_packet, timeout=1, verbose=False)[0]
 
+    # parse and return
     result = []
     for elt in answered:
         new_client = {"ip": elt[1].psrc, "mac": elt[1].hwsrc}
@@ -28,6 +34,7 @@ def discover(ip):
     return result
 
 
+# prints a table of all ip/mac pairs from a given discovery result list
 def print_table(results):
     header = "IP\t\tat MAC ADDRESS\n" \
              "------------------------------------"
